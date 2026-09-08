@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cybersecurity Breach Predictor</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #0f0f0f;
+      color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+      padding: 40px 20px;
+      position: relative;
+      overflow-x: hidden;
+      z-index: 0;
+    }
+
+    #particles-js {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: -1;
+    }
+
+    #particles-js canvas {
+      filter: drop-shadow(0 0 6px #fff8e1);
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 600;
+      margin-bottom: 10px;
+      text-align: center;
+      text-shadow: 0 0 6px rgba(255,255,255,0.4);
+    }
+
+    .greeting {
+      font-size: 18px;
+      text-align: center;
+      margin-bottom: 10px;
+      color: #00ff99;
+    }
+
+    .helpline-link {
+      font-size: 16px;
+      text-align: center;
+      margin-bottom: 20px;
+      color: #ffffff;
+    }
+
+    .helpline-link a {
+      color: #00ff99;
+      text-decoration: underline;
+    }
+
+    form {
+      background: rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(12px);
+      border-radius: 16px;
+      padding: 30px;
+      box-shadow: 0 12px 32px rgba(255,255,255,0.05);
+      width: 100%;
+      max-width: 420px;
+      max-height: 70vh;
+      overflow-y: auto;
+      transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+
+    form:hover {
+      transform: perspective(1000px) rotateX(1deg) rotateY(1deg);
+      box-shadow: 0 20px 40px rgba(255,255,255,0.1);
+    }
+
+    input {
+      margin: 6px 0;
+      padding: 10px;
+      width: 100%;
+      border-radius: 8px;
+      border: none;
+      font-size: 14px;
+      background-color: rgba(255,255,255,0.1);
+      color: #ffffff;
+      transition: box-shadow 0.3s ease, background-color 0.3s ease;
+    }
+
+    input:focus {
+      background-color: #ffffff;
+      color: #000000;
+      box-shadow: 0 0 10px rgba(255,255,255,0.8), 0 0 20px rgba(255,255,255,0.4);
+      outline: none;
+    }
+
+    input::placeholder {
+      color: rgba(255,255,255,0.7);
+    }
+
+    button {
+      margin-top: 15px;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      background-color: #00ff99;
+      color: #000000;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 0 10px #00ff99, 0 0 20px #00ff99;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #00cc77;
+    }
+
+    h3 {
+      margin-top: 30px;
+      font-size: 20px;
+      font-weight: 700;
+      text-align: center;
+      max-width: 90%;
+      word-wrap: break-word;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s ease forwards;
+      color: #ffffff;
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(255,255,255,0.05);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    footer {
+      margin-top: 40px;
+      font-size: 14px;
+      color: #ffffff;
+      text-align: center;
+    }
+
+    footer strong {
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+  <div id="particles-js"></div>
+
+  <h2>Cybersecurity Breach Prediction</h2>
+  <p class="greeting">
+    Welcome! Stay alert and secure. For cybercrime help, call the national helpline: <strong>1930</strong> (Toll-Free, 24/7).
+  </p>
+  <p class="helpline-link">
+    Need your country's cybercrime helpline? <br>
+    <a href="{{ url_for('static', filename='cyber_helplines.txt') }}" target="_blank">
+      Click here to view the global helpline list
+    </a>
+  </p>
+
+  <form action="{{ url_for('predict') }}" method="post">
+    {% for field in [
+      "duration","protocol_type","service","flag","src_bytes","dst_bytes","land","wrong_fragment","urgent",
+      "hot","num_failed_logins","logged_in","num_compromised","root_shell","su_attempted","num_root",
+      "num_file_creations","num_shells","num_access_files","num_outbound_cmds","is_host_login","is_guest_login",
+      "count","srv_count","serror_rate","srv_serror_rate","rerror_rate","srv_rerror_rate","same_srv_rate",
+      "diff_srv_rate","srv_diff_host_rate","dst_host_count","dst_host_srv_count","dst_host_same_srv_rate",
+      "dst_host_diff_srv_rate","dst_host_same_src_port_rate","dst_host_srv_diff_host_rate","dst_host_serror_rate",
+      "dst_host_srv_serror_rate","dst_host_rerror_rate","dst_host_srv_rerror_rate"
+    ] %}
+      <input type="text" name="{{ field }}" placeholder="{{ field }}" required><br>
+    {% endfor %}
+    <button type="submit">Predict</button>
+  </form>
+
+  {% if status_message %}
+    <h3>{{ status_message }}</h3>
+  {% endif %}
+
+  {% if prediction_text %}
+    <h3>{{ prediction_text }}</h3>
+  {% endif %}
+
+  <footer>
+    <p>© 2025 | Cybersecurity Breach Predictor<br>
+    <strong>Engineered by Hitha Vaishnavi S</strong></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/particles.js"></script>
+  <script>
+    particlesJS("particles-js", {
+      "particles": {
+        "number": { "value": 60 },
+        "size": { "value": 4, "random": true },
+        "color": { "value": "#fff8e1" },
+        "shape": {
+          "type": "circle",
+          "stroke": { "width": 0, "color": "#000" }
+        },
+        "opacity": { "value": 1, "random": false },
+        "line_linked": {
+          "enable": true,
+          "distance": 150,
+          "color": "#fff8e1",
+          "opacity": 0.4,
+          "width": 1
+        },
+        "move": {
+          "enable": true,
+          "speed": 1.5,
+          "direction": "none",
+          "random": false,
+          "straight": false,
+          "bounce": false
+        }
+      },
+      "interactivity": {
+        "detect_on": "canvas",
+        "events": {
+          "onhover": { "enable": true, "mode": "repulse" },
+          "onclick": { "enable": true, "mode": "push" }
+        },
+        "modes": {
+          "repulse": { "distance": 100 },
+          "push": { "particles_nb": 4 }
+        }
+      },
+      "retina_detect": true
+    });
+  </script>
+</body>
+</html>
